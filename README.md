@@ -48,7 +48,7 @@ kubectl patch deployment coredns -n kube-system --type merge -p '{"spec":{"templ
 
 ---
 
-🎯 Conclusão e Mindset
+**🎯 Conclusão e Mindset:**
 Toda a infraestrutura foi validada e posteriormente destruída via terraform destroy, seguindo as melhores práticas de FinOps e controle rigoroso de recursos em nuvem.
 
 "Do Terraform ao Running: Provisionando o futuro da computação serverless com precisão técnica e mentalidade Cloud Native."
