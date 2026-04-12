@@ -60,3 +60,5 @@ Identifiquei a necessidade de realizar um patch no Deployment para injetar a ano
 
 ```bash
 kubectl patch deployment coredns -n kube-system --type merge -p '{"spec":{"template":{"metadata":{"annotations":{"[eks.amazonaws.com/compute-type](https://eks.amazonaws.com/compute-type)":"fargate"}}}}}'
+
+Do Terraform ao Running: Provisionando o futuro da computação serverless com precisão técnica e mentalidade Cloud Native.
