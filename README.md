@@ -1,43 +1,43 @@
-# ☁️ Modern Enterprise Kubernetes Framework: EKS + Fargate (FinOps Edition)
+# Modern Enterprise EKS Fargate Infrastructure 🚀
 
-Este repositório contém uma infraestrutura robusta, escalável e de baixo custo operacional, utilizando o conceito de **Infrastructure as Code (IaC)** com Terraform para provisionar um ambiente de containers totalmente gerenciado na AWS.
+Este projeto demonstra a implementação de uma infraestrutura robusta, escalável e segura na AWS utilizando Terraform e Amazon EKS (Elastic Kubernetes Service) com perfis Fargate (Serverless).
 
----
+## 🏗️ Arquitetura do Projeto
+![Diagrama de Arquitetura](./img/diagrama-arquitetura.png)
 
-## 🛠️ Tecnologias e Decisões Técnicas
-
-| Ferramenta | O que escolhi? | Benefício Técnico |
-| :--- | :--- | :--- |
-| **Terraform** | IaC (Infrastructure as Code) | Garante que o ambiente seja replicável e versionado. |
-| **AWS EKS** | Orquestrador Kubernetes | Padrão de mercado para microserviços e alta disponibilidade. |
-| **AWS Fargate** | Serverless Compute | **Redução de TCO**. Sem patches de SO e sem custo de ociosidade. |
-| **VPC (Private Subnets)** | Segurança de Rede | Isolamento de recursos críticos contra acessos externos. |
+A solução foca em:
+- **Infraestrutura como Código (IaC):** Todo o provisionamento feito via Terraform.
+- **Segurança:** Implementação de IRSA (IAM Roles for Service Accounts) para privilégio mínimo.
+- **Eficiência de Custos:** Uso de Fargate para eliminar a necessidade de gerenciar instâncias EC2 (ZeroOps).
 
 ---
 
-## 💰 Benefícios Estratégicos & Redução de Custos
+## 🛠️ Passo a Passo da Implementação
 
-* **Zero-Idle Cost:** O Fargate escala do zero e cobra por segundo, eliminando gastos com servidores ligados sem uso.
-* **Eficiência de Operação (ZeroOps):** Foco no negócio, não na manutenção de instâncias Linux.
-* **Conformidade Fiscal:** Tags padronizadas via Terraform para auditoria total de custos.
+### 1. Provisionamento da Base
+Utilizei Terraform para criar uma VPC personalizada com subnets privadas e públicas, garantindo o isolamento da rede. O cluster EKS foi configurado para utilizar Fargate como compute engine principal.
+![Sucesso Terraform](./img/screenshot-terraform-apply.png)
 
----
+### 2. Configuração do Cluster
+Após o `terraform apply`, configurei o acesso ao cluster via `kubectl` e validei o status dos recursos diretamente no Console AWS.
+![Cluster Ativo](./img/screenshot-eks-cluster.png)
 
-## 💡 Desafios Técnicos e Resolução (Assessment de Engenharia)
-
-Durante a construção, enfrentei desafios reais que simulam ambientes críticos:
-
-### 1. O Desafio das Subnets e Ingress
-**Problema:** O Kubernetes não conseguia criar Load Balancers automaticamente nas subnets privadas.
-**Solução:** Identifiquei a falta de tags específicas. Implementei via Terraform a tag `kubernetes.io/role/internal-elb = 1`, permitindo a integração nativa entre K8s e a rede AWS.
-
-### 2. Segurança e Princípio do Menor Privilégio
-**Problema:** Como dar permissões aos Pods sem usar chaves de acesso estáticas?
-**Solução:** Configurei as **IAM Roles for Service Accounts (IRSA)** com OIDC Provider, garantindo permissões temporárias e seguras.
-
-### 3. Gestão de Repositórios e Instalação via CLI
-**Problema:** O repositório oficial da HashiCorp apresentou erro de metadados (404) no Amazon Linux 2023.
-**Solução:** Atuei de forma proativa instalando o binário do Terraform manualmente, garantindo a continuidade do deploy.
+### 3. Fargate Profiles
+Configurei perfis do Fargate para os namespaces `default` e `kube-system`, permitindo que até os componentes críticos do Kubernetes rodassem sem servidores físicos.
+![Fargate Profile](./img/screenshot-fargate-profile.png)
 
 ---
-**Documentado por Gustavo Gomes** *Cloud Engineer focado em modernização, segurança e otimização de infraestrutura.*
+
+## 🚧 Dificuldades Encontradas e Soluções (Troubleshooting)
+
+### O Problema do CoreDNS (Pending)
+**Dificuldade:** Ao iniciar o cluster, os pods do `coredns` ficaram presos no status `Pending`. Isso ocorreu porque o EKS, por padrão, tenta agendar o CoreDNS em instâncias EC2, que não existiam nesta arquitetura 100% Serverless.
+
+**Tentativas de Solução:**
+- Tentei utilizar `kubectl patch` via JSON para remover a anotação de compute-type, mas houve conflito de sintaxe no terminal da EC2.
+- Tentei a edição manual via `kubectl edit`, mas o editor `vi` apresentou problemas de permissão/salvamento no ambiente.
+
+**A Solução Definitiva:**
+Apliquei um `kubectl patch` utilizando a estratégia de **Merge**, que forçou a anotação `eks.amazonaws.com/compute-type: fargate` no deployment do CoreDNS.
+```bash
+kubectl patch deployment coredns -n kube-system --type merge -p '{"spec":{"template":{"metadata":{"annotations":{"[eks.amazonaws.com/compute-type](https://eks.amazonaws.com/compute-type)":"fargate"}}}}}'
