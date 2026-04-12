@@ -46,10 +46,14 @@ Realizei um patch no Deployment para injetar a anotação de scheduler do Fargat
 bash
 kubectl patch deployment coredns -n kube-system --type merge -p '{"spec":{"template":{"metadata":{"annotations":{"eks.amazonaws.com/compute-type":"fargate"}}}}}'
 
+---
+
 🎯 Conclusão e Mindset
 Toda a infraestrutura foi validada e posteriormente destruída via terraform destroy, seguindo as melhores práticas de FinOps e controle rigoroso de recursos em nuvem.
 
 "Do Terraform ao Running: Provisionando o futuro da computação serverless com precisão técnica e mentalidade Cloud Native."
+
+---
 
 Autor: Gustavo Gomes | Cloud Engineer & Devops
 
