@@ -3,7 +3,7 @@
 Este projeto demonstra a implementação de uma infraestrutura robusta, escalável e segura na AWS utilizando Terraform e Amazon EKS (Elastic Kubernetes Service) com perfis Fargate (Serverless).
 
 ## 🏗️ Arquitetura do Projeto
-![Diagrama de Arquitetura](./img/diagrama-arquitetura.png)
+![Diagrama de Arquitetura](.diagrama-arquitetura.png)
 
 A solução foca em:
 - **Infraestrutura como Código (IaC):** Todo o provisionamento feito via Terraform.
