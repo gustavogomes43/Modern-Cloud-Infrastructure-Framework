@@ -3,7 +3,7 @@
 Este projeto demonstra a implementação de uma infraestrutura robusta, escalável e segura na AWS utilizando Terraform e Amazon EKS (Elastic Kubernetes Service) com perfis Fargate (Serverless).
 
 ## 🏗️ Arquitetura do Projeto
-![Diagrama de Arquitetura](.diagrama-arquitetura.png)
+![Diagrama de Arquitetura](diagrama-arquitetura.png)
 
 A solução foca em:
 - **Infraestrutura como Código (IaC):** Todo o provisionamento feito via Terraform.
@@ -16,15 +16,15 @@ A solução foca em:
 
 ### 1. Provisionamento da Base
 Utilizei Terraform para criar uma VPC personalizada com subnets privadas e públicas, garantindo o isolamento da rede. O cluster EKS foi configurado para utilizar Fargate como compute engine principal.
-![Sucesso Terraform](./img/screenshot-terraform-apply.png)
+![Sucesso Terraform](screenshot-terraform-apply.png)
 
 ### 2. Configuração do Cluster
 Após o `terraform apply`, configurei o acesso ao cluster via `kubectl` e validei o status dos recursos diretamente no Console AWS.
-![Cluster Ativo](./img/screenshot-eks-cluster.png)
+![Cluster Ativo](screenshot-eks-cluster.png)
 
 ### 3. Fargate Profiles
 Configurei perfis do Fargate para os namespaces `default` e `kube-system`, permitindo que até os componentes críticos do Kubernetes rodassem sem servidores físicos.
-![Fargate Profile](./img/screenshot-fargate-profile.png)
+![Fargate Profile](screenshot-fargate-profile.png)
 
 ---
 
