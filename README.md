@@ -6,7 +6,7 @@ Este repositório contém uma infraestrutura robusta, escalável e de baixo cust
 
 ## 🛠️ Tecnologias e Decisões Técnicas
 
-| Ferramenta | Por que escolhi? | Benefício Técnico |
+| Ferramenta | O que escolhi? | Benefício Técnico |
 | :--- | :--- | :--- |
 | **Terraform** | IaC (Infrastructure as Code) | Garante que o ambiente seja replicável e versionado. |
 | **AWS EKS** | Orquestrador Kubernetes | Padrão de mercado para microserviços e alta disponibilidade. |
