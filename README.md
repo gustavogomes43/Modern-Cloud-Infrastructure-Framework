@@ -19,6 +19,36 @@ A solução foca em:
 
 ---
 
+## 📈 Business Case & ROI (Impacto de Negócio)
+
+A adoção desta arquitetura ZeroOps não é apenas uma escolha técnica, mas uma decisão estratégica para otimização de recursos e redução de riscos. Abaixo, as métricas estimadas baseadas em benchmarks de mercado (migração EC2 ➔ Fargate):
+
+### 💰 Eficiência Financeira (FinOps)
+* **Redução de Desperdício (Waste):** Em clusters tradicionais, cerca de **35% da capacidade paga é subutilizada**. Com o modelo *Pay-as-you-go* do Fargate, o desperdício é reduzido para **praticamente 0%**.
+* **Economia Operacional (OpEx):** Redução estimada de **20% no faturamento mensal** ao eliminar instâncias ociosas e custos ocultos de gerenciamento de NAT Gateways para tráfego entre nós.
+
+### 🛠️ Excelência Operacional (ZeroOps)
+* **Manutenção Zero:** Eliminação de **100% das tarefas de patching de SO** e atualização de AMIs. A AWS gerencia a segurança do host.
+* **Foco no Produto:** Liberação de aproximadamente **15-20 horas mensais** do time de DevOps, antes gastas com gestão de capacidade, agora focadas em melhorias na pipeline de CI/CD.
+
+### ⚡ Agilidade e Time-to-Market
+* **Escalabilidade Acelerada:** Redução de **60% no tempo de provisionamento**. Enquanto nós EC2 levam minutos para subir, o Fargate escala horizontalmente em segundos sob demanda.
+
+---
+
+## 🛡️ Matriz de Segurança e Conformidade
+
+A solução foi desenhada sob o princípio de **Defesa em Profundidade**:
+
+| Vetor de Risco | Solução Implementada | Benefício para a Empresa |
+| :--- | :--- | :--- |
+| **Privilégios Excessivos** | **IRSA** (IAM Roles for Service Accounts) | Garante que cada Pod tenha apenas as permissões necessárias (Princípio do Menor Privilégio). |
+| **Ataque Lateral (Kernel)** | **Isolamento de Micro-VMs** | Diferente de nós compartilhados, cada Pod roda em sua própria VM isolada, impedindo ataques entre containers. |
+| **Vulnerabilidades de Host** | **Infraestrutura Gerenciada** | Elimina vetores de ataque comuns por falta de atualização de patches no sistema operacional do nó. |
+| **Exposição de Rede** | **Subnets Privadas** | Toda a carga de trabalho reside em redes isoladas, sem IP público, protegendo a integridade dos dados. |
+
+---
+
 ## 🚀 Implementação Passo a Passo
 
 ### 1. Provisionamento da Base (IaC)
