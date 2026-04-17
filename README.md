@@ -86,7 +86,7 @@ Toda a infraestrutura foi validada e posteriormente destruída via terraform des
 
 ---
 
-Autor: Gustavo Gomes | Cloud Engineer & Devops
+Autor: Gustavo Gomes | Cloud & Devops
 
 
 
